@@ -8,6 +8,7 @@
   right: 0;
   top: $headerHeight + $toolbarHeight + $formulaHeight;
   overflow-x: auto;
+  overflow-y: auto;
   padding-bottom: 2px;
 
   & .row {
