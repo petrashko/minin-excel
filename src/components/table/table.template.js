@@ -34,7 +34,7 @@ function createTable(rowsCount = 15) {
     //     'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     // ];
 
-    const colsCount = CODES.Z - CODES.A + 1;
+    const colsCount = CODES.Z - CODES.A + 1;  // Compute cols count
     const rows = [];
 
     // 1-ая строка таблицы (с буквами)
