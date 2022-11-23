@@ -1,5 +1,8 @@
-import { ExcelComponent } from "@core/ExcelComponent";
-import { createTable } from "@/components/table/table.template";
+//import { $ } from '@core/dom.js';
+import { ExcelComponent } from '@core/ExcelComponent.js';
+import { createTable } from '@/components/table/table.template.js';
+import { resizeHandler } from '@/components/table/table.resize.js';
+import { shouldResize } from '@/components/table/table.functions.js';
 
 class Table extends ExcelComponent {
     //
@@ -9,7 +12,8 @@ class Table extends ExcelComponent {
     constructor($root) {
         super($root, {
             name: 'Table',
-            listeners: []
+            //listeners: ['click', 'mousedown', 'mousemove', 'mouseup']
+            listeners: ['mousedown']
         });
     }
 
@@ -55,6 +59,14 @@ class Table extends ExcelComponent {
     }
 
     //
+    onMousedown(event) {
+        if (shouldResize(event)) {
+            event.preventDefault();
+            resizeHandler(this.$root, event);
+        }
+    }
+
+    //
     init() {
         super.init();
 
@@ -63,6 +75,4 @@ class Table extends ExcelComponent {
     }
 }
 
-export {
-Table
-}
+export { Table }

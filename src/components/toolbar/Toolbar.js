@@ -1,4 +1,4 @@
-import {ExcelComponent} from "@core/ExcelComponent";
+import {ExcelComponent} from '@core/ExcelComponent.js';
 
 class Toolbar extends ExcelComponent {
     //
@@ -42,6 +42,4 @@ class Toolbar extends ExcelComponent {
     }
 }
 
-export {
-    Toolbar
-}
+export { Toolbar }
