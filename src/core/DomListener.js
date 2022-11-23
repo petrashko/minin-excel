@@ -1,4 +1,4 @@
-import { capitalize } from "@core/utils";
+import { capitalize } from '@core/utils.js';
 
 class DomListener {
     //
@@ -44,6 +44,4 @@ function getMethodName(eventName) {
 
 //*******************************************************************
 
-export {
-    DomListener
-}
+export { DomListener }

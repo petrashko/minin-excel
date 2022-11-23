@@ -49,6 +49,39 @@ class Dom {
 
         return this;
     }
+
+    //
+    get data() {
+        return this.$el.dataset;
+    }
+
+    //
+    closest(selector) {
+        return $(this.$el.closest(selector));
+    }
+
+    //
+    getCoords() {
+        const coords = this.$el.getBoundingClientRect();
+        return coords;
+    }
+
+    //
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector);
+    }
+
+    //
+    css(styles = {}) {
+        // for (const key in styles) {
+        //     if (styles.hasOwnProperty(key)) {
+        //         this.$el.style[key] = styles[key];
+        //     }
+        // }
+        Object
+            .keys(styles)
+            .forEach(key => this.$el.style[key] = styles[key]);
+    }
 }
 
 //*******************************************************************

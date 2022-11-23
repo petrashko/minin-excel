@@ -1,4 +1,4 @@
-import { ExcelComponent } from "@core/ExcelComponent";
+import { ExcelComponent } from '@core/ExcelComponent.js';
 
 class Formula extends ExcelComponent {
     //
@@ -32,6 +32,4 @@ class Formula extends ExcelComponent {
     }
 }
 
-export {
-    Formula
-}
+export { Formula }

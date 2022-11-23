@@ -1,4 +1,4 @@
-import {ExcelComponent} from "@core/ExcelComponent";
+import {ExcelComponent} from '@core/ExcelComponent.js';
 
 class Header extends ExcelComponent {
     //
@@ -28,6 +28,4 @@ class Header extends ExcelComponent {
     }
 }
 
-export {
-    Header
-}
+export { Header }

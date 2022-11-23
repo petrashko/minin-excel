@@ -1,5 +1,5 @@
 // @core: см. файл 'webpack.config.js' раздел 'resolve'
-import { $ } from '@core/dom';
+import { $ } from '@core/dom.js';
 
 class Excel {
     //
@@ -39,6 +39,4 @@ class Excel {
     }
 }
 
-export {
-    Excel
-}
+export { Excel }

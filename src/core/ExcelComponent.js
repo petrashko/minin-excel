@@ -1,5 +1,5 @@
 // @core: см. файл 'webpack.config.js' раздел 'resolve'
-import { DomListener } from '@core/DomListener';
+import { DomListener } from '@core/DomListener.js';
 
 class ExcelComponent extends DomListener {
     //
@@ -24,6 +24,4 @@ class ExcelComponent extends DomListener {
     }
 }
 
-export {
-    ExcelComponent
-}
+export { ExcelComponent }
