@@ -16,10 +16,22 @@ function createRow(index, content) {
     `;
 }
 
-function toCell(_, col) {
+/*
+function toCell(row, col) {
     return `
-        <div class="cell" contenteditable="true" spellcheck="false" data-col="${col}"></div>
+        <div class="cell" contenteditable="true" spellcheck="false" data-col="${col}" data-row="${row}"></div>
     `;
+}
+*/
+// Или с использованием замыканий
+function toCell(row) {
+    return function(_, col) {
+        return `
+            <div class="cell" contentEditable="true" spellCheck="false"
+                    data-type="cell" data-col="${col}" data-id="${row}:${col}">
+            </div>
+        `;
+    }
 }
 
 function toColumn(col, index) {
@@ -57,16 +69,16 @@ function createTable(rowsCount = 15) {
 
     rows.push( createRow(null, cols) );
 
-    for (let i=0; i < rowsCount; i++) {
+    for (let row=0; row < rowsCount; row++) {
         // Строка таблицы (с ячейками)
         const cells = new Array(colsCount)
             .fill('')
-            //.map(el => toCell())
-            // Или
-            .map(toCell)
+            //.map((_, col) => toCell(row, col))
+            // Или с использованием замыканий
+            .map(toCell(row))
             .join('');
 
-        rows.push( createRow(i+1, cells) );
+        rows.push( createRow(row+1, cells) );
     }
 
     return rows.join('');

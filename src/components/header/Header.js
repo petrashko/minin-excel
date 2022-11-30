@@ -5,10 +5,12 @@ class Header extends ExcelComponent {
     static  className = 'excel__header';
 
     //
-    constructor($root) {
+    constructor($root, options) {
         super($root, {
             name: 'Header',
-            listeners: []
+            listeners: [],
+            //
+            ...options
         });
     }
 
