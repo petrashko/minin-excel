@@ -20,14 +20,14 @@ class Emitter {
     }
 
     // Подписка на кастомное событие
-    subsribe(eventName, fn) {
+    subsribe(eventName, func) {
         this.listeners[eventName] = this.listeners[eventName] || [];
-        this.listeners[eventName].push(fn);
+        this.listeners[eventName].push(func);
 
         // Вернуть функцию, которая позволяет отписаться
         return () => {
             this.listeners[eventName] =
-                this.listeners[eventName].filter(listener => listener !== fn);
+                this.listeners[eventName].filter(listener => listener !== func);
         }
     }
 }

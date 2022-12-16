@@ -1,6 +1,7 @@
 // @core: см. файл 'webpack.config.js' раздел 'resolve'
 import { $ } from '@core/dom.js';
 import { Emitter } from '@core/Emitter.js';
+import { StoreSubscriber } from '@core/StoreSubscriber.js';
 
 class Excel {
     //
@@ -10,6 +11,9 @@ class Excel {
         this.components = options.components || [];
         //
         this.emitter = new Emitter();
+        //
+        this.store = options.store;
+        this.subscriber = new StoreSubscriber(this.store);
     }
 
     //
@@ -17,7 +21,8 @@ class Excel {
         const $root = $.create('div', 'excel');
 
         const componentOptions = {
-            emitter: this.emitter
+            emitter: this.emitter,
+            store: this.store
         }
 
         this.components = this.components.map((Component) => {
@@ -41,6 +46,8 @@ class Excel {
     render() {
         this.$el.append( this.getRoot() );
 
+        this.subscriber.subscribeComponents(this.components);
+
         this.components.map((component) => {
             component.init();
         });
@@ -48,6 +55,9 @@ class Excel {
 
     //
     destroy() {
+        // Отписаться от store'a
+        this.subscriber.unsubscribeFromStore();
+
         this.components.forEach(component => {
             component.destroy();
         });

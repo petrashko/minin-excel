@@ -1,4 +1,7 @@
+import * as dispatchActions from '@/redux/actions.js';
 import { $ } from '@core/dom.js';
+import { parse } from '@core/parse.js';
+import { defaultStyles } from '@/constants.js';
 import { ExcelComponent } from '@core/ExcelComponent.js';
 import { TableSelection } from '@/components/table/TableSelection';
 import { createTable } from '@/components/table/table.template.js';
@@ -20,44 +23,8 @@ class Table extends ExcelComponent {
     }
 
     //
-    /*
     toHTML() {
-        return `
-            <!-- 1-ая строка таблицы (с буквами) -->
-            <div class="row">
-                <div class="row-info"></div>
-                <div class="row-data">
-                    <div class="column">A</div>
-                    <div class="column">B</div>
-                    <div class="column">C</div>
-                </div>
-            </div>
-            <!---->
-            <div class="row">
-                <div class="row-info">1</div>
-                <div class="row-data">
-                    <div class="cell selected" contenteditable="true" spellcheck="false">A1</div>
-                    <div class="cell" contenteditable="true" spellcheck="false">B1</div>
-                    <div class="cell" contenteditable="true" spellcheck="false">C1</div>
-                </div>
-            </div>
-            <!---->
-            <div class="row">
-                <div class="row-info">2</div>
-                <div class="row-data">
-                    <div class="cell">A2</div>
-                    <div class="cell">B2</div>
-                    <div class="cell">C2</div>
-                </div>
-            </div>
-            <!---->
-        `;
-    }
-    */
-
-    //
-    toHTML() {
-        return createTable(25);
+        return createTable(25, this.store.getState());
     }
 
     //
@@ -76,25 +43,56 @@ class Table extends ExcelComponent {
 
         //
         this.$on('formula:input', (text) => {
-            this.selection.current.text(text);
+            this.selection.current.attr('data-value', text)
+            this.selection.current.text(parse(text));
+            this.updateTextInStore(text);
         });
         //
         this.$on('formula:done', () => {
             this.selection.current.focus();
+        });
+        //
+        this.$on('toolbar:applyStyle', (style) => {
+            this.selection.applyStyle(style);
+            //
+            this.$dispatch( dispatchActions.applyStyle({
+                value: style,
+                ids: this.selection.selectedIds
+            }) );
         });
     }
 
     //
     selectCell($cell) {
         this.selection.select($cell);
+        //
         this.$emit('table:select', $cell);
+        //
+        const styles = $cell.getStyles(Object.keys(defaultStyles));
+        this.$dispatch( dispatchActions.changeStyles(styles) );
+    }
+
+    //
+    async resizeTable(event) {
+        try {
+            const data = await resizeHandler(this.$root, event);
+            this.$dispatch( dispatchActions.tableResize(data) );
+        } catch (err) { console.warn(err); }
+    }
+
+    //
+    updateTextInStore(value) {
+        this.$dispatch( dispatchActions.changeText({
+            id: this.selection.current.id(),
+            value
+        }));
     }
 
     //
     onMousedown(event) {
         if (shouldResize(event)) {
             event.preventDefault();
-            resizeHandler(this.$root, event);
+            this.resizeTable(event);
         }
         else if (isCell(event)) {
             const $target = $(event.target);
@@ -104,7 +102,7 @@ class Table extends ExcelComponent {
                 this.selection.selectGroup($cells);
             }
             else {
-                this.selection.select($target);
+                this.selectCell($target);
             }
         }
     }
@@ -126,7 +124,10 @@ class Table extends ExcelComponent {
     //
     onInput(event) {
         if (isCell(event)) {
-            this.$emit('table:select', $(event.target));
+            //this.$emit('table:select', $(event.target));
+            // Работаем (связываем компоненты Table и Formula)
+            // через store
+            this.updateTextInStore( $(event.target).text() );
         }
     }
 }
