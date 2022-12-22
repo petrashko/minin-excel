@@ -40,13 +40,18 @@ function rootReducer(state, action) {
                 ...state,
                 title: action.payload
             }
+        case dispatchTypes.UPDATE_DATE:
+            return {
+                ...state,
+                openedDate: new Date().toJSON()
+            }
         default:
             return state;
     }
 }
 
 function value(state, field, action) {
-    const val = state[field] || {};
+    const val = {...state[field]} || {};
     val[action.payload.id] = action.payload.value;
     return val;
 }

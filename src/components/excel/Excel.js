@@ -1,13 +1,12 @@
 // @core: см. файл 'webpack.config.js' раздел 'resolve'
+import * as dispatchActions from '@/redux/actions.js';
 import { $ } from '@core/dom.js';
 import { Emitter } from '@core/Emitter.js';
 import { StoreSubscriber } from '@core/StoreSubscriber.js';
 
 class Excel {
     //
-    constructor(selector, options) {
-        //this.$el = document.querySelector(selector);
-        this.$el = $(selector);
+    constructor(options) {
         this.components = options.components || [];
         //
         this.emitter = new Emitter();
@@ -43,8 +42,8 @@ class Excel {
     }
 
     //
-    render() {
-        this.$el.append( this.getRoot() );
+    init() {
+        this.store.dispatch( dispatchActions.updateDate() );
 
         this.subscriber.subscribeComponents(this.components);
 

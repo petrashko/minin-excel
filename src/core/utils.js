@@ -43,6 +43,10 @@ function toInlineStyles(styles={}) {
     }).join('; ');
 }
 
+function clone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 // Например, полезно чтобы слишком часто не отправлять
 // запросы на сервер, при пользовательском вводе
 function debounce(func, wait) {
@@ -68,5 +72,6 @@ export {
     isEqual,
     camelToDashCase,
     toInlineStyles,
+    clone,
     debounce
 }

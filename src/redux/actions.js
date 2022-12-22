@@ -23,6 +23,12 @@ function changeStyles(data) {
     }
 }
 
+function updateDate() {
+    return {
+        type: dispatchTypes.UPDATE_DATE
+    }
+}
+
 function applyStyle(data) {
     return {
         type: dispatchTypes.APPLY_STYLE,
@@ -42,6 +48,7 @@ function changeTitle(data) {
 export {
     tableResize,
     changeText,
+    updateDate,
     changeStyles,
     applyStyle,
     changeTitle

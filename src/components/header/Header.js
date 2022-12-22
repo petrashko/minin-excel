@@ -1,8 +1,9 @@
 import * as dispatchActions from '@/redux/actions.js';
-import { $ } from '@core/dom.js';
 import { defaultTitle } from '@/constants.js';
+import { $ } from '@core/dom.js';
+import { debounce } from '@core/utils.js';
 import { ExcelComponent } from '@core/ExcelComponent.js';
-import {debounce} from "../../core/utils";
+import { ActiveRoute } from '@core/routing/ActiveRoute.js';
 
 class Header extends ExcelComponent {
     //
@@ -12,7 +13,7 @@ class Header extends ExcelComponent {
     constructor($root, options) {
         super($root, {
             name: 'Header',
-            listeners: ['input'],
+            listeners: ['input', 'click'],
             //
             ...options
         });
@@ -30,11 +31,11 @@ class Header extends ExcelComponent {
         return `
             <input type="text" class="input" value="${title}" />
             <div>
-                <div class="button">
-                    <i class="material-icons">delete</i>
+                <div class="button" data-button="remove">
+                    <i class="material-icons" data-button="remove">delete</i>
                 </div>
-                <div class="button">
-                    <i class="material-icons">exit_to_app</i>
+                <div class="button" data-button="exit">
+                    <i class="material-icons" data-button="exit">exit_to_app</i>
                 </div>
             </div>
         `;
@@ -44,6 +45,23 @@ class Header extends ExcelComponent {
     onInput(event) {
         const $target = $(event.target);
         this.$dispatch( dispatchActions.changeTitle($target.text()) );
+    }
+
+    //
+    onClick(event) {
+        const $target = $(event.target);
+
+        if ($target.data.button === 'remove') {
+            const decision = confirm('Вы действительно хотите удалить таблицу?');
+            if (decision) {
+                localStorage.removeItem(`excel:${ActiveRoute.param}`);
+                ActiveRoute.navigate('#dashboard');
+            }
+        }
+
+        if ($target.data.button === 'exit') {
+            ActiveRoute.navigate('#dashboard');
+        }
     }
 }
 
